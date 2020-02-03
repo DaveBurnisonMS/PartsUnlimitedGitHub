@@ -75,8 +75,8 @@ stages:
         subscriptionId: '33b1bf3d-53dc-432d-ac1c-ae964ceb1c9b'
         resourceGroupName: '$(ResourceGroupName)'
         location: 'West US 2'
-        csmFile: '$(System.DefaultWorkingDirectory)/PartsUnlimitedE2E/drop/PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.json'
-        csmParametersFile: '$(System.DefaultWorkingDirectory)/PartsUnlimitedE2E/drop/PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.param.json'
+        csmFile: '$(System.DefaultWorkingDirectory)/PartsUnlimited/drop/PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.json'
+        csmParametersFile: '$(System.DefaultWorkingDirectory)/PartsUnlimited/drop/PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.param.json'
         overrideParameters: '-CICDEngineName "$(CICDEngine)" -WebsiteName $(WebsiteName) -PUL_ServerName $(ServerName)  -PUL_HostingPlanName $(HostingPlan)'
 
     - task: AzureRmWebAppDeployment@3
@@ -87,5 +87,5 @@ stages:
         DeployToSlotFlag: true
         ResourceGroupName: '$(ResourceGroupName)'
         SlotName: Dev
-        Package: '$(System.DefaultWorkingDirectory)/PartsUnlimitedE2E/drop/PartsUnlimitedWebsite.zip'
+        Package: '$(System.DefaultWorkingDirectory)/PartsUnlimited/drop/PartsUnlimitedWebsite.zip'
 
