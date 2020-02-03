@@ -63,3 +63,29 @@ stages:
       displayName: 'Publish Artifact'
       inputs:
         PathtoPublish: '$(build.artifactstagingdirectory)'
+
+- stage: Dev
+  jobs:
+  - job: Dev
+    steps:
+    - task: AzureResourceManagerTemplateDeployment@3
+      displayName: 'ARM Template Execution'
+      inputs:
+        azureResourceManagerConnection: 'AzureDevOpsCommunity dabu-PartsUnlimited'
+        subscriptionId: '33b1bf3d-53dc-432d-ac1c-ae964ceb1c9b'
+        resourceGroupName: '$(ResourceGroupName)'
+        location: 'West US 2'
+        csmFile: '$(System.DefaultWorkingDirectory)/PartsUnlimitedE2E/drop/PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.json'
+        csmParametersFile: '$(System.DefaultWorkingDirectory)/PartsUnlimitedE2E/drop/PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.param.json'
+        overrideParameters: '-CICDEngineName "$(CICDEngine)" -WebsiteName $(WebsiteName) -PUL_ServerName $(ServerName)  -PUL_HostingPlanName $(HostingPlan)'
+
+    - task: AzureRmWebAppDeployment@3
+      displayName: 'Azure App Service Deploy'
+      inputs:
+        azureSubscription: 'AzureDevOpsCommunity dabu-PartsUnlimited'
+        WebAppName: '$(WebsiteName)'
+        DeployToSlotFlag: true
+        ResourceGroupName: '$(ResourceGroupName)'
+        SlotName: Dev
+        Package: '$(System.DefaultWorkingDirectory)/PartsUnlimitedE2E/drop/PartsUnlimitedWebsite.zip'
+
