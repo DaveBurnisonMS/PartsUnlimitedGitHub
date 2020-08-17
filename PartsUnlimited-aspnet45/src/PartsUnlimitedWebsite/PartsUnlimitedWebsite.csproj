@@ -343,6 +343,7 @@
     <None Include="Properties\PublishProfiles\partsunlimitedcus07.pubxml" />
     <Content Include="Images\admin_icon.png" />
     <Content Include="Images\admin_mo_icon.png" />
+    <Content Include="Images\azure_devops_dashboard_icon.png" />
     <Content Include="Images\cart_icon.png" />
     <Content Include="Images\cart_mo_icon.png" />
     <Content Include="Images\community_1.png" />
@@ -358,6 +359,7 @@
     <Content Include="Images\home_mo_icon.png" />
     <Content Include="Images\login_profile_icon.png" />
     <Content Include="Images\login_safe_icon.png" />
+    <Content Include="Images\microsoft_teams_icon.png" />
     <Content Include="Images\mobile_search_icon.png" />
     <Content Include="Images\product_batteries_basic-battery.jpg" />
     <Content Include="Images\product_batteries_jumper-leads.jpg" />
