@@ -59,6 +59,7 @@
   },
   "resources": [
     {
+      // KEY RESOURCE: SQL Server
       "name": "[variables('PartsUnlimitedServerName')]",
       "type": "Microsoft.Sql/servers",
       "location": "[resourceGroup().location]",
@@ -86,6 +87,7 @@
           }
         },
         {
+          // KEY RESOURCE: Database
           "name": "[parameters('PUL_DBName')]",
           "type": "databases",
           "location": "[resourceGroup().location]",
@@ -106,6 +108,7 @@
       ]
     },
     {
+      // KEY RESOURCE: SQL Server (Dev)
       "name": "[variables('PartsUnlimitedServerNameDev')]",
       "type": "Microsoft.Sql/servers",
       "location": "[resourceGroup().location]",
@@ -134,6 +137,7 @@
           }
         },
         {
+          // KEY RESOURCE: Database (Dev)
           "name": "[parameters('PUL_DBName')]",
           "type": "databases",
           "location": "[resourceGroup().location]",
@@ -154,6 +158,7 @@
       ]
     },
     {
+      // KEY RESOURCE: SQL Server (QA)
       "name": "[variables('PartsUnlimitedServerNameQA')]",
       "type": "Microsoft.Sql/servers",
       "location": "[resourceGroup().location]",
@@ -182,6 +187,7 @@
           }
         },
         {
+          // KEY RESOURCE: Database (QA)
           "name": "[parameters('PUL_DBName')]",
           "type": "databases",
           "location": "[resourceGroup().location]",
@@ -202,6 +208,7 @@
       ]
     },
     {
+      // KEY RESOURCE: Application Insights
       "name": "[concat(parameters('WebsiteName'), '-Insights')]",
       "type": "Microsoft.Insights/components",
       "location": "eastus",
@@ -215,6 +222,7 @@
       }
     },
     {
+      // KEY RESOURCE: Application Insights (Dev)
       "name": "[concat(parameters('WebsiteName'), '-DevInsights')]",
       "type": "Microsoft.Insights/components",
       "location": "eastus",
@@ -228,6 +236,7 @@
       }
     },
     {
+      // KEY RESOURCE: Application Insights (QA)
       "name": "[concat(parameters('WebsiteName'), '-QAInsights')]",
       "type": "Microsoft.Insights/components",
       "location": "eastus",
@@ -241,6 +250,7 @@
       }
     },
     {
+      // KEY RESOURCE: App Service
       "name": "[parameters('PUL_HostingPlanName')]",
       "type": "Microsoft.Web/serverfarms",
       "location": "[resourceGroup().location]",
@@ -456,6 +466,7 @@
           }
         },
         {
+          // KEY RESOURCE: App Service - "Dev" Slot
           "name": "Dev",
           "type": "slots",
           "location": "[resourceGroup().location]",
@@ -498,6 +509,7 @@
           ]
         },
         {
+          // KEY RESOURCE: App Service - "QA" Slot
           "name": "QA",
           "type": "slots",
           "location": "[resourceGroup().location]",
