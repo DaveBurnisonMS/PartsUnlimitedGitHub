@@ -41,10 +41,12 @@ jobs:
           echo test, and deploy your project.
 
   Dev:
+    if: not(contains(github.event_name, 'pull_request'))
+    
     # The type of runner that the job will run on
     runs-on: windows-2019
     env:
-      ENV_NAME: -Dev 
+      ENV_NAME: -dev 
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     environment:
@@ -57,10 +59,12 @@ jobs:
         run: echo 'This is Dev!'
 
   QA:
+    if: not(contains(github.event_name, 'pull_request'))
+    
     # The type of runner that the job will run on
     runs-on: windows-2019
     env:
-      ENV_NAME: -QA
+      ENV_NAME: -qa
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     environment:
@@ -73,6 +77,8 @@ jobs:
         run: echo 'This is QA!'
 
   Production:
+    if: not(contains(github.event_name, 'pull_request'))
+    
     # The type of runner that the job will run on
     runs-on: windows-2019
 
