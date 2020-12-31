@@ -34,7 +34,7 @@ jobs:
     env: 
       # Path to the solution file relative to the root of the project.
       SOLUTION_FILE_PATH: './PartsUnlimited-aspnet45'
-      SOLUTION: './**/*.sln'
+      SOLUTION: './PartsUnlimited-aspnet45/PartsUnlimited.sln'
       # Configuration type to build.
       # You can convert this to a build matrix if you need coverage of multiple configuration types.
       # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
