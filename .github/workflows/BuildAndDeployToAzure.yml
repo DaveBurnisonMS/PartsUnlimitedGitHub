@@ -47,11 +47,13 @@ jobs:
     runs-on: windows-2019
     env:
       ENV_NAME: -dev 
+      ENV_URL: format(${{env.BASE_URL}}, ${{env.ENV_NAME}})
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     environment:
       name: Dev
-      url: format(${{env.BASE_URL}}, ${{env.ENV_NAME}})
+      url: ${{env.ENV_URL}}
+
     needs: CI
     steps:
       # Runs a single command using the runners shell
@@ -65,11 +67,13 @@ jobs:
     runs-on: windows-2019
     env:
       ENV_NAME: -qa
+      ENV_URL: format(${{env.BASE_URL}}, ${{env.ENV_NAME}})
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     environment:
       name: QA
-      url: format(${{env.BASE_URL}}, ${{env.ENV_NAME}})
+      url: ${{env.ENV_URL}}
+
     needs: Dev
     steps:
       # Runs a single command using the runners shell
@@ -83,11 +87,13 @@ jobs:
     runs-on: windows-2019
     env:
       ENV_NAME: ${{null}} 
+      ENV_URL: format(${{env.BASE_URL}}, ${{env.ENV_NAME}})
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     environment:
       name: Production
-      url: format(${{env.BASE_URL}}, ${{env.ENV_NAME}})
+      url: ${{env.ENV_URL}}
+
     needs: QA
     steps:
       # Runs a single command using the runners shell
