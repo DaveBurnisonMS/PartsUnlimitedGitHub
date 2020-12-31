@@ -35,7 +35,10 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Runs a single command using the runners shell
-      - name: Run a multi-line script
+      - name: Run a script
+        run: echo 'This is the test text string.'
+
+      - name: Run a script
         run: echo 'This is the $env:GITHUB_WORKFLOW workflow, run # $env:GITHUB_RUN_NUMBER from $env:GITHUB_REPOSITORY '
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
