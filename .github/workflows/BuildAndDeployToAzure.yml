@@ -48,7 +48,7 @@ jobs:
          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
          resourceGroupName: ${{ Azure_Resource_Group }}
          template: PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.json
-         parameters: WebsiteName=${{ Website_Name }} PUL_ServerName=${{ SQL_Server_Name }} PUL_HostingPlanName=${{ Hosting_Plan_Name }} CICDEngineName="${{ TAG_CICD_Engine_Name }}
+         parameters: WebsiteName=${{ env.Website_Name }} PUL_ServerName=${{ env.SQL_Server_Name }} PUL_HostingPlanName=${{ env.Hosting_Plan_Name }} CICDEngineName="${{ env.TAG_CICD_Engine_Name }}
          deploymentMode: Validation
          deploymentName: PartsUnlimited from GitHub Actions
 
