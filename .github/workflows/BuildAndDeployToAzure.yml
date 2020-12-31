@@ -47,7 +47,7 @@ jobs:
     runs-on: windows-2019
     env:
       ENV_NAME: -dev 
-      ENV_URL: format('https://dabu-partsunlimited{0}.azurewebsites.net/', ${{ env.ENV_NAME }})
+      ENV_URL: format('https://dabu-partsunlimited{0}.azurewebsites.net/', ${{ ENV_NAME }})
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     environment:
@@ -67,7 +67,7 @@ jobs:
     runs-on: windows-2019
     env:
       ENV_NAME: -qa
-      ENV_URL: format('https://dabu-partsunlimited{0}.azurewebsites.net/', ${{ env.ENV_NAME }})
+      ENV_URL: format('https://dabu-partsunlimited{0}.azurewebsites.net/', ${{ ENV_NAME }})
  
     # Steps represent a sequence of tasks that will be executed as part of the job
     environment:
@@ -87,7 +87,7 @@ jobs:
     runs-on: windows-2019
     env:
       ENV_NAME: ${{null}} 
-      ENV_URL: format('https://dabu-partsunlimited{0}.azurewebsites.net/', ${{ env.ENV_NAME }})
+      ENV_URL: format('https://dabu-partsunlimited{0}.azurewebsites.net/', ${{ ENV_NAME }})
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     environment:
