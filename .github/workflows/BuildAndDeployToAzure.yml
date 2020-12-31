@@ -9,7 +9,7 @@ env:
   SQL_Server_Name: dabu-PartsUnlimited
   Website_Name: dabu-PartsUnlimited
   Hosting_Plan_Name: dabu-PartsUnlimited
-  Deployment_Name: ${{ GITHUB_REPOSITORY }}.${{ GITHUB_WORKFLOW }}.${{ GITHUB_RUN_NUMBER }}
+  Deployment_Name: ${{ github.repository }}.${{ github.workflow }}.${{ github.run_number }}
 
 # Controls when the action will run. 
 on:
