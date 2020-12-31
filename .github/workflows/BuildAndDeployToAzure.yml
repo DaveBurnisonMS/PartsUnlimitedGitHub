@@ -60,7 +60,7 @@ jobs:
          template: PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.json
          parameters: PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.param.json CICDEngineName="${{ env.TAG_CICD_Engine_Name }}" PUL_ServerName=${{ env.SQL_Server_Name }} PUL_DBLogin=${{ secrets.SQL_DB_LOGIN }} PUL_DBPassword=${{ secrets.SQL_DB_PASSWORD }} PUL_DBPasswordForTest=${{ secrets.SQL_DB_PASSWORD }} PUL_HostingPlanName=${{ env.Hosting_Plan_Name }} WebsiteName=${{ env.Website_Name }} 
          deploymentMode: Validate
-         deploymentName: ${{ env.GITHUB_REPOSITORY }}.${{ env.GITHUB_WORKFLOW }}.${{ env.GITHUB_RUN_NUMBER }}
+         deploymentName: PartsUnlimitedGitHub.${{ env.GITHUB_WORKFLOW }}.${{ env.GITHUB_RUN_NUMBER }}
 
       - name: Azure logout
         run: |
@@ -72,7 +72,10 @@ jobs:
           path: public/
 
   Dev:
-    if: contains(github.event_name, 'push')
+###################################################
+## REMOVE THIS COMMENT
+#    if: contains(github.event_name, 'push')
+###################################################
     
     # The type of runner that the job will run on
     runs-on: windows-2019
@@ -107,7 +110,7 @@ jobs:
          template: PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.json
          parameters: PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.param.json CICDEngineName="${{ env.TAG_CICD_Engine_Name }}" PUL_ServerName=${{ env.SQL_Server_Name }} PUL_DBLogin=${{ secrets.SQL_DB_LOGIN }} PUL_DBPassword=${{ secrets.SQL_DB_PASSWORD }} PUL_DBPasswordForTest=${{ secrets.SQL_DB_PASSWORD }} PUL_HostingPlanName=${{ env.Hosting_Plan_Name }} WebsiteName=${{ env.Website_Name }} 
          deploymentMode: Incremental
-         deploymentName: ${{ env.GITHUB_REPOSITORY }}.${{ env.GITHUB_WORKFLOW }}.${{ env.GITHUB_RUN_NUMBER }}
+         deploymentName: PartsUnlimitedGitHub.${{ env.GITHUB_WORKFLOW }}.${{ env.GITHUB_RUN_NUMBER }}
 
       - name: Azure logout
         run: |
