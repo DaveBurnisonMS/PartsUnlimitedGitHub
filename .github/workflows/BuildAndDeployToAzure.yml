@@ -47,12 +47,11 @@ jobs:
     runs-on: windows-2019
     env:
       ENV_NAME: -dev 
-      ENV_URL: format('https://dabu-partsunlimited{0}.azurewebsites.net/', ${{ ENV_NAME }})
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     environment:
       name: Dev
-      url: ${{env.ENV_URL}}
+      url: https://dabu-partsunlimited-dev.azurewebsites.net/ 
 
     needs: CI
     steps:
@@ -67,12 +66,11 @@ jobs:
     runs-on: windows-2019
     env:
       ENV_NAME: -qa
-      ENV_URL: format('https://dabu-partsunlimited{0}.azurewebsites.net/', ${{ ENV_NAME }})
  
     # Steps represent a sequence of tasks that will be executed as part of the job
     environment:
       name: QA
-      url: ${{env.ENV_URL}}
+      url: https://dabu-partsunlimited-qa.azurewebsites.net/ 
 
     needs: Dev
     steps:
@@ -87,12 +85,11 @@ jobs:
     runs-on: windows-2019
     env:
       ENV_NAME: ${{null}} 
-      ENV_URL: format('https://dabu-partsunlimited{0}.azurewebsites.net/', ${{ ENV_NAME }})
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     environment:
       name: Production
-      url: ${{env.ENV_URL}}
+      url: https://dabu-partsunlimited.azurewebsites.net/ 
 
     needs: QA
     steps:
