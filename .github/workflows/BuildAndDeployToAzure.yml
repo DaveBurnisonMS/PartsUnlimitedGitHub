@@ -43,7 +43,7 @@ jobs:
 
      # Validate the ARM Template
       - uses: azure/arm-deploy@v1
-        id: Validate ARM Template
+        id: ValidateARMTemplate
         with:
          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
          resourceGroupName: ${{ env.Azure_Resource_Group }}
