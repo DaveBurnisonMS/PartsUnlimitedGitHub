@@ -2,7 +2,13 @@
 
 name: Build_And_Deploy_To_Azure
 env:
-  BASE_URL: https://dabu-partsunlimited{0}.azurewebsites.net/     
+  BASE_URL: https://dabu-partsunlimited{0}.azurewebsites.net/
+  Artifact_Name: PartsUnlimited
+  Azure_Resource_Group: dabu-PartsUnlimited
+  SQL_Server_Name: dabu-PartsUnlimited
+  Website_Name: dabu-PartsUnlimited
+  Hosting_Plan_Name: dabu-PartsUnlimited
+  TAG_CICD_Engine_Name: GitHub Actions
 
 # Controls when the action will run. 
 on:
@@ -35,7 +41,18 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # Runs a single command using the runners shell
+     # Validate the ARM Template
+      - uses: azure/arm-deploy@v1
+        id: Validate ARM Template
+        with:
+         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+         resourceGroupName: ${{ Azure_Resource_Group }}
+         template: PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.json
+         parameters: WebsiteName=${{ Website_Name }} PUL_ServerName=${{ SQL_Server_Name }} PUL_HostingPlanName=${{ Hosting_Plan_Name }} CICDEngineName="${{ TAG_CICD_Engine_Name }}
+         deploymentMode: Validation
+         deploymentName: PartsUnlimited from GitHub Actions
+
+     # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo This is the build!
 
@@ -64,9 +81,18 @@ jobs:
 
     needs: CI
     steps:
+      - name: "Login via Azure CLI"
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo 'This is Dev!'
+        
+      - name: Azure logout
+        run: |
+          az logout
 
   QA:
     if: contains(github.event_name, 'push')
@@ -83,9 +109,18 @@ jobs:
 
     needs: Dev
     steps:
+      - name: "Login via Azure CLI"
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo 'This is QA!'
+
+      - name: Azure logout
+        run: |
+          az logout
 
   Production:
     if: contains(github.event_name, 'push')
@@ -102,6 +137,15 @@ jobs:
 
     needs: QA
     steps:
+      - name: "Login via Azure CLI"
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo 'This is Production!'
+
+      - name: Azure logout
+        run: |
+          az logout
