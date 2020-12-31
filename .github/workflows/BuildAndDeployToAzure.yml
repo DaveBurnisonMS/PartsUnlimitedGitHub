@@ -9,7 +9,7 @@ env:
   SQL_Server_Name: dabu-PartsUnlimited
   Website_Name: dabu-PartsUnlimited
   Hosting_Plan_Name: dabu-PartsUnlimited
-  Deployment_Name: ${{ github.repository }}.${{ github.workflow }}.${{ github.run_number }}
+  Deployment_Name: PartsUnlimited.${{ github.workflow }}.${{ github.run_number }}
 
 # Controls when the action will run. 
 on:
@@ -34,14 +34,6 @@ jobs:
     
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Runs a single command using the runners shell
-      - name: Dump Workflow info
-        run: |
-          echo 'Repo, Workflow and Run #'
-          echo $env:GITHUB_REPOSITORY
-          echo $env:GITHUB_WORKFLOW
-          echo $env:GITHUB_RUN_NUMBER
-
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout
         uses: actions/checkout@v2
