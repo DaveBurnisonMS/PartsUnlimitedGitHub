@@ -42,14 +42,15 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
      # Validate the ARM Template
-      - uses: azure/arm-deploy@v1
+      - name: "Validate ARM Template"
+        uses: azure/arm-deploy@v1
         id: ValidateARMTemplate
         with:
          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
          resourceGroupName: ${{ env.Azure_Resource_Group }}
          template: PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.json
          parameters: WebsiteName=${{ env.Website_Name }} PUL_ServerName=${{ env.SQL_Server_Name }} PUL_HostingPlanName=${{ env.Hosting_Plan_Name }} CICDEngineName="${{ env.TAG_CICD_Engine_Name }}
-         deploymentMode: Validation
+         deploymentMode: Validate
          deploymentName: PartsUnlimited from GitHub Actions
 
      # Runs a single command using the runners shell
