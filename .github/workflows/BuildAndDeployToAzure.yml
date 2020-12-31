@@ -36,7 +36,7 @@ jobs:
     steps:
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: echo This is the $GITHUB_WORKFLOW workflow, run # $GITHUB_RUN_NUMBER from $GITHUB_REPOSITORY
+        run: echo "This is the $GITHUB_WORKFLOW workflow, run # $GITHUB_RUN_NUMBER from $GITHUB_REPOSITORY"
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
