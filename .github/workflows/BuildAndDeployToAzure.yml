@@ -4,11 +4,14 @@ name: Build_And_Deploy_To_Azure
 env:
   BASE_URL: https://dabu-partsunlimited{0}.azurewebsites.net/
   Artifact_Name: PartsUnlimited
+  #ARM Template Parameters
+  TAG_CICD_Engine_Name: GitHub Actions
   Azure_Resource_Group: dabu-PartsUnlimited
   SQL_Server_Name: dabu-PartsUnlimited
+  SQL_DB_LOGIN:  
+  SQL_DB_PASSWORD
   Website_Name: dabu-PartsUnlimited
   Hosting_Plan_Name: dabu-PartsUnlimited
-  TAG_CICD_Engine_Name: GitHub Actions
 
 # Controls when the action will run. 
 on:
@@ -49,7 +52,14 @@ jobs:
          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
          resourceGroupName: ${{ env.Azure_Resource_Group }}
          template: PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.json
-         parameters: WebsiteName=${{ env.Website_Name }} PUL_ServerName=${{ env.SQL_Server_Name }} PUL_HostingPlanName=${{ env.Hosting_Plan_Name }} CICDEngineName="${{ env.TAG_CICD_Engine_Name }}
+         parameters: |
+           CICDEngineName="${{ env.TAG_CICD_Engine_Name }}
+           PUL_ServerName=${{ env.SQL_Server_Name }} 
+           PUL_DBLogin=${{ secrets.SQL_DB_LOGIN }}
+           PUL_DBPassword=${{ secrets.SQL_DB_PASSWORD }}
+           PUL_DBPasswordForTest=${{ secrets.SQL_DB_PASSWORD }}
+           PUL_HostingPlanName=${{ env.Hosting_Plan_Name }} 
+           WebsiteName=${{ env.Website_Name }} 
          deploymentMode: Validate
          deploymentName: PartsUnlimited from GitHub Actions
 
