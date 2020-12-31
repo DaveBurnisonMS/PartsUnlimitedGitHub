@@ -51,7 +51,8 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     environment:
       name: Dev
-      url: 'https://dabu-partsunlimited-dev.azurewebsites.net/'  
+      # url: 'https://dabu-partsunlimited-dev.azurewebsites.net/'        
+      url: format(${{ BASE_URL }}, ${{ ENV_NAME }} )
     needs: CI
     steps:
       # Runs a single command using the runners shell
