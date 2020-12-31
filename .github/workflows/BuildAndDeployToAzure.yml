@@ -2,7 +2,6 @@
 
 name: Build_And_Deploy_To_Azure
 env:
-  BASE_URL: https://dabu-partsunlimited{0}.azurewebsites.net/
   Artifact_Name: PartsUnlimited
   #ARM Template Parameters
   TAG_CICD_Engine_Name: GitHub Actions
@@ -10,6 +9,7 @@ env:
   SQL_Server_Name: dabu-PartsUnlimited
   Website_Name: dabu-PartsUnlimited
   Hosting_Plan_Name: dabu-PartsUnlimited
+  Deployment_Name: ${{ env.GITHUB_REPOSITORY }}.${{ env.GITHUB_WORKFLOW }}.${{ env.GITHUB_RUN_NUMBER }}
 
 # Controls when the action will run. 
 on:
@@ -43,7 +43,8 @@ jobs:
           echo $env:GITHUB_RUN_NUMBER
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
       - name: "Login via Azure CLI"
         uses: azure/login@v1
@@ -60,13 +61,14 @@ jobs:
          template: PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.json
          parameters: PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.param.json CICDEngineName="${{ env.TAG_CICD_Engine_Name }}" PUL_ServerName=${{ env.SQL_Server_Name }} PUL_DBLogin=${{ secrets.SQL_DB_LOGIN }} PUL_DBPassword=${{ secrets.SQL_DB_PASSWORD }} PUL_DBPasswordForTest=${{ secrets.SQL_DB_PASSWORD }} PUL_HostingPlanName=${{ env.Hosting_Plan_Name }} WebsiteName=${{ env.Website_Name }} 
          deploymentMode: Validate
-         deploymentName: PartsUnlimitedGitHub.${{ env.GITHUB_WORKFLOW }}.${{ env.GITHUB_RUN_NUMBER }}
+         deploymentName: ${{ env.Deployment_Name }}
 
       - name: Azure logout
         run: |
           az logout
   
-      - uses: actions/upload-artifact@main
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@main
         with:
           name: PUL_Artifacts
           path: public/
@@ -89,11 +91,14 @@ jobs:
 
     needs: CI
     steps:
-      - name: Download built artifact
-        uses: actions/download-artifact@main
-        with:
-          name: PUL_Artifacts
-          path: public
+      - name: Checkout
+        uses: actions/checkout@v2
+
+#      - name: Download built artifact
+#        uses: actions/download-artifact@main
+#        with:
+#          name: PUL_Artifacts
+#          path: public
           
       - name: "Login via Azure CLI"
         uses: azure/login@v1
@@ -110,7 +115,7 @@ jobs:
          template: PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.json
          parameters: PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.param.json CICDEngineName="${{ env.TAG_CICD_Engine_Name }}" PUL_ServerName=${{ env.SQL_Server_Name }} PUL_DBLogin=${{ secrets.SQL_DB_LOGIN }} PUL_DBPassword=${{ secrets.SQL_DB_PASSWORD }} PUL_DBPasswordForTest=${{ secrets.SQL_DB_PASSWORD }} PUL_HostingPlanName=${{ env.Hosting_Plan_Name }} WebsiteName=${{ env.Website_Name }} 
          deploymentMode: Incremental
-         deploymentName: PartsUnlimitedGitHub.${{ env.GITHUB_WORKFLOW }}.${{ env.GITHUB_RUN_NUMBER }}
+         deploymentName: ${{ env.Deployment_Name }}
 
       - name: Azure logout
         run: |
