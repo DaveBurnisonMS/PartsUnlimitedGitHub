@@ -43,7 +43,6 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # Validate the ARM Template
       - name: "Validate ARM Template"
         uses: azure/arm-deploy@v1
         id: ValidateARMTemplate
@@ -66,17 +65,13 @@ jobs:
           path: public/
 
   Dev:
-###################################################
-## REMOVE THIS COMMENT
-#    if: contains(github.event_name, 'push')
-###################################################
+    if: contains(github.event_name, 'push')
     
     # The type of runner that the job will run on
     runs-on: windows-2019
     env:
       ENV_NAME: -dev 
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     environment:
       name: Dev
       url: https://dabu-partsunlimited-dev.azurewebsites.net/ 
@@ -97,7 +92,6 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # Deploy the ARM Template
       - name: "Deploy ARM Template"
         uses: azure/arm-deploy@v1
         id: ValidateARMTemplate
