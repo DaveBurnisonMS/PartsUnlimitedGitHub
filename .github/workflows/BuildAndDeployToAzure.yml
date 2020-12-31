@@ -8,8 +8,6 @@ env:
   TAG_CICD_Engine_Name: GitHub Actions
   Azure_Resource_Group: dabu-PartsUnlimited
   SQL_Server_Name: dabu-PartsUnlimited
-  SQL_DB_LOGIN:  
-  SQL_DB_PASSWORD
   Website_Name: dabu-PartsUnlimited
   Hosting_Plan_Name: dabu-PartsUnlimited
 
