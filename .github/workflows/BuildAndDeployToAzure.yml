@@ -46,7 +46,7 @@ jobs:
         id: Validate ARM Template
         with:
          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-         resourceGroupName: ${{ Azure_Resource_Group }}
+         resourceGroupName: ${{ env.Azure_Resource_Group }}
          template: PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.json
          parameters: WebsiteName=${{ env.Website_Name }} PUL_ServerName=${{ env.SQL_Server_Name }} PUL_HostingPlanName=${{ env.Hosting_Plan_Name }} CICDEngineName="${{ env.TAG_CICD_Engine_Name }}
          deploymentMode: Validation
