@@ -31,12 +31,39 @@ jobs:
   CI:
     # The type of runner that the job will run on
     runs-on: windows-2019
-    
+    env: 
+      # Path to the solution file relative to the root of the project.
+      SOLUTION_FILE_PATH: '**/*.sln'
+      # Configuration type to build.
+      # You can convert this to a build matrix if you need coverage of multiple configuration types.
+      # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
+      BUILD_PLATFORM: 'Any CPU'
+      BUILD_CONFIGURATION: Release
+  
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v1
+
+      - name: Restore NuGet packages
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        run: nuget restore ${{env.SOLUTION_FILE_PATH}}
+
+      - name: Build
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        # Add additional options to the MSBuild command line here (like platform or verbosity level).
+        # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
+        run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:PlatformTarget=${{ env.BUILD_PLATFORM }}  ${{env.SOLUTION_FILE_PATH}} /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true 
+      
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@main
+        with:
+          name: PUL_Artifacts
+          path: public/
 
       - name: "Login via Azure CLI"
         uses: azure/login@v1
@@ -58,12 +85,6 @@ jobs:
         run: |
           az logout
   
-      - name: Upload Build Artifacts
-        uses: actions/upload-artifact@main
-        with:
-          name: PUL_Artifacts
-          path: public/
-
   Dev:
     if: contains(github.event_name, 'push')
     
