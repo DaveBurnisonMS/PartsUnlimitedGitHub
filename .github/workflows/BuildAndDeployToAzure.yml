@@ -2,7 +2,6 @@
 
 name: Build_And_Deploy_To_Azure
 env:
-  Artifact_Name: PartsUnlimited
   #ARM Template Parameters
   TAG_CICD_Engine_Name: GitHub Actions
   Azure_Resource_Group: dabu-PartsUnlimited
@@ -47,6 +46,9 @@ jobs:
   
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      ###########################################
+      # Build App
+      ###########################################
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout
         uses: actions/checkout@v2
@@ -70,12 +72,9 @@ jobs:
           name: PUL_Website
           path: "${{ env.ARTIFACT_STAGING_PATH }}"
 
-      - name: Upload ARM Artifacts
-        uses: actions/upload-artifact@main
-        with:
-          name: PUL_Website
-          path: "${{ env.ARM_FILE_BASE }}.*"
-
+      ###########################################
+      # Validate the ARM Template
+      ###########################################
       - name: "Azure login"
         uses: azure/login@v1
         with:
@@ -120,9 +119,9 @@ jobs:
 
     needs: CI
     steps:
-#      - name: Checkout
-#        uses: actions/checkout@v2
-
+      ###########################################
+      # Deploy the ARM Template
+      ###########################################
       - name: Download ARM Files
         uses: actions/download-artifact@main
         with:
@@ -149,12 +148,20 @@ jobs:
         run: |
           az logout
 
-      - name: Download built artifact
+      ###########################################
+      # Deploy the Web App
+      ###########################################
+      - name: Download build artifacts
         uses: actions/download-artifact@main
         with:
           name: PUL_Website
-          path: public
+          path: PUL_Website
 
+      - name: Display structure of the build artifacts
+        run: | 
+          cd PUL_Website
+          dir /b
+        
   QA:
     if: contains(github.event_name, 'push')
     
