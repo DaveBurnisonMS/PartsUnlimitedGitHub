@@ -67,6 +67,18 @@ jobs:
         # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
         run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:PlatformTarget=${{ env.BUILD_PLATFORM }} /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="${{ env.ARTIFACT_STAGING_PATH }}" ${{env.SOLUTION}} 
       
+###########################################
+# Debug Build Output
+###########################################
+      - name: Display structure of the build artifacts
+        run: | 
+          cd "${{ env.ARTIFACT_STAGING_PATH }}"
+          dir 
+          
+###########################################
+# Debug Build Output
+###########################################
+          
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@main
         with:
@@ -123,7 +135,6 @@ jobs:
       ###########################################
       # Debug Artifact Downloads
       ###########################################
-      #Copy from above
       - name: Download build artifacts
         uses: actions/download-artifact@main
         with:
@@ -133,7 +144,7 @@ jobs:
       - name: Display structure of the build artifacts
         run: | 
           cd PUL_Website
-          dir /b
+          dir 
 
       ###########################################
       # Deploy the ARM Template
