@@ -36,6 +36,9 @@ jobs:
       SOLUTION_FILE_PATH: './PartsUnlimited-aspnet45'
       SOLUTION: './PartsUnlimited-aspnet45/PartsUnlimited.sln'
       OUTPUT_PATH: './PartsUnlimited-aspnet45/src/PartsUnlimitedWebsite/bin'
+      ARM_TEMPLATE_FILE: 'PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.json'
+      ARM_PARAMETERS_FILE: 'PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.param.json'
+  
       # Configuration type to build.
       # You can convert this to a build matrix if you need coverage of multiple configuration types.
       # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
@@ -65,7 +68,7 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: PUL_Website
-          path: "${{ OUTPUT_PATH }}/*.zip"
+          path: "${{ env.OUTPUT_PATH }}/*.zip"
 
       - name: "Azure login"
         uses: azure/login@v1
@@ -78,8 +81,8 @@ jobs:
         with:
          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
          resourceGroupName: ${{ env.Azure_Resource_Group }}
-         template: PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.json
-         parameters: PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.param.json CICDEngineName="${{ env.TAG_CICD_Engine_Name }}" PUL_ServerName=${{ env.SQL_Server_Name }} PUL_DBLogin=${{ secrets.SQL_DB_LOGIN }} PUL_DBPassword=${{ secrets.SQL_DB_PASSWORD }} PUL_DBPasswordForTest=${{ secrets.SQL_DB_PASSWORD }} PUL_HostingPlanName=${{ env.Hosting_Plan_Name }} WebsiteName=${{ env.Website_Name }} 
+         template: ${{ env.ARM_TEMPLATE_FILE }} 
+         parameters: ${{ env.ARM_PARAMETERS_FILE }} CICDEngineName="${{ env.TAG_CICD_Engine_Name }}" PUL_ServerName=${{ env.SQL_Server_Name }} PUL_DBLogin=${{ secrets.SQL_DB_LOGIN }} PUL_DBPassword=${{ secrets.SQL_DB_PASSWORD }} PUL_DBPasswordForTest=${{ secrets.SQL_DB_PASSWORD }} PUL_HostingPlanName=${{ env.Hosting_Plan_Name }} WebsiteName=${{ env.Website_Name }} 
          deploymentMode: Validate
          deploymentName: ${{ env.Deployment_Name }}
 
