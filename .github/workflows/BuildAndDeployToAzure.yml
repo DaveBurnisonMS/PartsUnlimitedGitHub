@@ -35,7 +35,7 @@ jobs:
       # Path to the solution file relative to the root of the project.
       SOLUTION_FILE_PATH: './PartsUnlimited-aspnet45'
       SOLUTION: './PartsUnlimited-aspnet45/PartsUnlimited.sln'
-      OUTPUT_PATH: './PartsUnlimited-aspnet45/src/PartsUnlimitedWebsite/bin'
+      ARTIFACT_STAGING_PATH: './PartsUnlimited-aspnet45/src/PartsUnlimitedWebsite/bin/ArtifactStaging'
       ARM_TEMPLATE_FILE: 'PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.json'
       ARM_PARAMETERS_FILE: 'PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.param.json'
   
@@ -62,13 +62,13 @@ jobs:
         working-directory: ${{env.GITHUB_WORKSPACE}}
         # Add additional options to the MSBuild command line here (like platform or verbosity level).
         # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-        run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:PlatformTarget=${{ env.BUILD_PLATFORM }} /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="${{ env.OUTPUT_PATH }}" ${{env.SOLUTION}} 
+        run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:PlatformTarget=${{ env.BUILD_PLATFORM }} /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="${{ env.ARTIFACT_STAGING_PATH }}" ${{env.SOLUTION}} 
       
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@main
         with:
           name: PUL_Website
-          path: "${{ env.OUTPUT_PATH }}/*.zip"
+          path: "${{ env.ARTIFACT_STAGING_PATH }}"
 
       - name: "Azure login"
         uses: azure/login@v1
@@ -91,7 +91,10 @@ jobs:
           az logout
   
   Dev:
-    if: contains(github.event_name, 'push')
+    ###########################################################################
+    # REMOVE THIS COMMENT  
+    # if: contains(github.event_name, 'push')
+    ###########################################################################
     
     # The type of runner that the job will run on
     runs-on: windows-2019
