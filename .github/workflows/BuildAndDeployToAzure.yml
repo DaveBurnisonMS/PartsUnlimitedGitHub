@@ -36,7 +36,8 @@ jobs:
       # Path to the solution file relative to the root of the project.
       SOLUTION_FILE_PATH: 'PartsUnlimited-aspnet45'
       SOLUTION: 'PartsUnlimited-aspnet45/PartsUnlimited.sln'
-      ARTIFACT_STAGING_PATH: 'PartsUnlimited-aspnet45/src/PartsUnlimitedWebsite/bin/ArtifactStaging'
+#      ARTIFACT_STAGING_PATH: 'PartsUnlimited-aspnet45/src/PartsUnlimitedWebsite/bin/ArtifactStaging'
+      ARTIFACT_STAGING_PATH: 'PartsUnlimited-aspnet45/src/PartsUnlimitedWebsite/bin'
   
       # Configuration type to build.
       # You can convert this to a build matrix if you need coverage of multiple configuration types.
@@ -120,6 +121,21 @@ jobs:
     needs: CI
     steps:
       ###########################################
+      # Debug Artifact Downloads
+      ###########################################
+      #Copy from above
+      - name: Download build artifacts
+        uses: actions/download-artifact@main
+        with:
+          name: PUL_Website
+          path: PUL_Website
+
+      - name: Display structure of the build artifacts
+        run: | 
+          cd PUL_Website
+          dir /b
+
+      ###########################################
       # Deploy the ARM Template
       ###########################################
       - name: Download ARM Files
@@ -151,16 +167,7 @@ jobs:
       ###########################################
       # Deploy the Web App
       ###########################################
-      - name: Download build artifacts
-        uses: actions/download-artifact@main
-        with:
-          name: PUL_Website
-          path: PUL_Website
-
-      - name: Display structure of the build artifacts
-        run: | 
-          cd PUL_Website
-          dir /b
+      #Copy from above
         
   QA:
     if: contains(github.event_name, 'push')
