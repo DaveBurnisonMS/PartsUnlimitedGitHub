@@ -149,12 +149,13 @@ jobs:
         run: |
           az logout
 
-       - name: Download built artifact
+      - name: Download built artifact
         uses: actions/download-artifact@main
         with:
           name: PUL_Website
           path: public
- QA:
+
+  QA:
     if: contains(github.event_name, 'push')
     
     # The type of runner that the job will run on
