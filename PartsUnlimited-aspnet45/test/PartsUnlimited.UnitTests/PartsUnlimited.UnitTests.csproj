@@ -121,18 +121,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <AdditionalFiles Include="..\..\PartsUnlimited.DepValidation\DependencyValidation1.layerdiagram">
-      <Link>DependencyValidation1.layerdiagram</Link>
-      <Visible>False</Visible>
-    </AdditionalFiles>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Scripts\jquery-3.5.1.min.map" />
     <None Include="Scripts\jquery-3.5.1.slim.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\..\packages\Microsoft.DependencyValidation.Analyzers.0.9.0\analyzers\dotnet\cs\Microsoft.DependencyValidation.Analyzers.resources.dll" />
-    <Analyzer Include="..\..\packages\Microsoft.DependencyValidation.Analyzers.0.9.0\analyzers\dotnet\Microsoft.DependencyValidation.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\jquery-3.5.1.intellisense.js" />
