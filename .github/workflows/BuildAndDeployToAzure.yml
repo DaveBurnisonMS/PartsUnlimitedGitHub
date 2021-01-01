@@ -67,18 +67,6 @@ jobs:
         # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
         run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:PlatformTarget=${{ env.BUILD_PLATFORM }} /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="${{ env.ARTIFACT_STAGING_FOLDER }}" ${{env.SOLUTION}} 
       
-###########################################
-# Debug Build Output
-###########################################
-      - name: Display structure of the build artifacts
-        run: | 
-          cd "${{env.ARTIFACT_STAGING_PATH}}/${{env.ARTIFACT_STAGING_FOLDER}}"
-          dir 
-          
-###########################################
-# Debug Build Output
-###########################################
-          
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@main
         with:
@@ -133,20 +121,6 @@ jobs:
     needs: CI
     steps:
       ###########################################
-      # Debug Artifact Downloads
-      ###########################################
-      - name: Download build artifacts
-        uses: actions/download-artifact@main
-        with:
-          name: PUL_Website
-          path: PUL_Website
-
-      - name: Display structure of the build artifacts
-        run: | 
-          cd PUL_Website
-          dir 
-
-      ###########################################
       # Deploy the ARM Template
       ###########################################
       - name: Download ARM Files
@@ -178,7 +152,11 @@ jobs:
       ###########################################
       # Deploy the Web App
       ###########################################
-      #Copy from above
+      - name: Download build artifacts
+        uses: actions/download-artifact@main
+        with:
+          name: PUL_Website
+          path: PUL_Website
         
   QA:
     if: contains(github.event_name, 'push')
