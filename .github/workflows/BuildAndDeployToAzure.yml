@@ -70,16 +70,18 @@ jobs:
         run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:PlatformTarget=${{ env.BUILD_PLATFORM }} /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="${{ env.ARTIFACT_STAGING_FOLDER }}" ${{env.SOLUTION}} 
       
       - name: Upload Build Artifacts
+        if: ${{ github.event_name != 'pull_request' }}
         uses: actions/upload-artifact@main
         with:
           name: Website
           path: "${{env.ARTIFACT_STAGING_PATH}}/${{env.ARTIFACT_STAGING_FOLDER}}"
 
       - name: Upload Test Artifacts
+#        if: ${{ github.event_name != 'pull_request' }}
         uses: actions/upload-artifact@main
         with:
           name: Tests
-          path: "${{env.TESTS_STAGING_PATH}}/${{BUILD_CONFIGURATION}}"
+          path: "${{env.TESTS_STAGING_PATH}}/${{env.BUILD_CONFIGURATION}}"
 
       ###########################################
       # Validate the ARM Template
@@ -105,6 +107,7 @@ jobs:
           az logout
   
       - name: Upload ARM Artifacts
+        if: ${{ github.event_name != 'pull_request' }}
         uses: actions/upload-artifact@main
         with:
           name: ARM_Templates
