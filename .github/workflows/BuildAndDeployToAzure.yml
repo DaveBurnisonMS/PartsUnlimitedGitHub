@@ -37,7 +37,6 @@ jobs:
       SOLUTION_FILE_PATH: 'PartsUnlimited-aspnet45'
       SOLUTION: 'PartsUnlimited-aspnet45/PartsUnlimited.sln'
       ARTIFACT_STAGING_PATH: 'PartsUnlimited-aspnet45/src/PartsUnlimitedWebsite'
-#      ARTIFACT_STAGING_FOLDER: 'bin/ArtifactStaging'
       ARTIFACT_STAGING_FOLDER: 'bin'
       TESTS_STAGING_PATH: 'PartsUnlimited-aspnet45/test/PartsUnlimited.SeleniumTests/bin'
   
@@ -59,10 +58,23 @@ jobs:
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v1
 
+      - name: Cache Website NuGet packages
+        uses: actions/cache@v2
+        env:
+          cache-name: Cache-Website-NuGet-Packages
+        with:
+          path: "PartsUnlimited-aspnet45/packages"
+          key: ${{ env.cache-name }}-${{ hashFiles('PartsUnlimited-aspnet45/src/PartsUnlimitedWebsite/packages.config') }}
+
       - name: Restore NuGet packages
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: nuget restore ${{env.SOLUTION_FILE_PATH}}
 
+#######################################################
+      - name: Stop Here
+        run: echo "::error Stopping here to save time!"
+#######################################################
+        
       - name: Build
         working-directory: ${{env.GITHUB_WORKSPACE}}
         # Add additional options to the MSBuild command line here (like platform or verbosity level).
@@ -70,7 +82,7 @@ jobs:
         run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:PlatformTarget=${{ env.BUILD_PLATFORM }} /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="${{ env.ARTIFACT_STAGING_FOLDER }}" ${{env.SOLUTION}} 
       
       - name: Upload Build Artifacts
-        if: ${{ github.event_name != 'pull_request' }}
+#        if: ${{ github.event_name != 'pull_request' }}
         uses: actions/upload-artifact@main
         with:
           name: Website
@@ -107,7 +119,7 @@ jobs:
           az logout
   
       - name: Upload ARM Artifacts
-        if: ${{ github.event_name != 'pull_request' }}
+#        if: ${{ github.event_name != 'pull_request' }}
         uses: actions/upload-artifact@main
         with:
           name: ARM_Templates
