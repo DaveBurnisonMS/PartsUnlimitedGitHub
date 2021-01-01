@@ -58,13 +58,13 @@ jobs:
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v1
 
-      - name: Cache Website NuGet packages
+      - name: Cache NuGet packages
         uses: actions/cache@v2
         env:
-          cache-name: Cache-Website-NuGet-Packages
+          cache-name: Cache-NuGet-Packages
         with:
           path: "PartsUnlimited-aspnet45/packages"
-          key: ${{ env.cache-name }}-${{ hashFiles('PartsUnlimited-aspnet45/src/PartsUnlimitedWebsite/packages.config') }}
+          key: ${{ env.cache-name }}-${{ hashFiles('PartsUnlimited-aspnet45/src/PartsUnlimitedWebsite/packages.config') }}-${{ hashFiles('PartsUnlimited-aspnet45/test/PartsUnlimited.SeleniumTests/packages.config') }}-${{ hashFiles('PartsUnlimited-aspnet45/test/PartsUnlimited.UnitTests/packages.config') }}
 
       - name: Restore NuGet packages
         working-directory: ${{env.GITHUB_WORKSPACE}}
@@ -72,7 +72,7 @@ jobs:
 
 #######################################################
       - name: Stop Here
-        run: echo "::error Stopping here to save time!"
+        run: echo "::error ::Stopping here to save time!"
 #######################################################
         
       - name: Build
