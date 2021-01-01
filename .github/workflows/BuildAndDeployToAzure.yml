@@ -79,7 +79,7 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: Tests
-          path: "${{env.TESTS_STAGING_PATH}}"
+          path: "${{env.TESTS_STAGING_PATH}}/${{BUILD_CONFIGURATION}}"
 
       ###########################################
       # Validate the ARM Template
