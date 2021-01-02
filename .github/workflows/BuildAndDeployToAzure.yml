@@ -39,7 +39,7 @@ jobs:
       SOLUTION_FILE_PATH: 'PartsUnlimited-aspnet45'
       SOLUTION: 'PartsUnlimited-aspnet45/PartsUnlimited.sln'
       ARTIFACT_STAGING_PATH: 'PartsUnlimited-aspnet45/src/PartsUnlimitedWebsite'
-      ARTIFACT_STAGING_FOLDER: 'bin/ArtifactStaging'
+      ARTIFACT_STAGING_FOLDER: 'bin/Website'
       TESTS_STAGING_PATH: 'PartsUnlimited-aspnet45/test/PartsUnlimited.SeleniumTests/bin'
   
       # Configuration type to build.
@@ -76,7 +76,7 @@ jobs:
         working-directory: ${{env.GITHUB_WORKSPACE}}
         # Add additional options to the MSBuild command line here (like platform or verbosity level).
         # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-        run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:PlatformTarget=${{ env.BUILD_PLATFORM }} /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="${{env.GITHUB_WORKSPACE}}/${{env.ARTIFACT_STAGING_PATH}}/${{env.ARTIFACT_STAGING_FOLDER}}" ${{env.SOLUTION}} 
+        run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:PlatformTarget=${{ env.BUILD_PLATFORM }} /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:publishUrl="${{env.GITHUB_WORKSPACE}}/${{env.ARTIFACT_STAGING_PATH}}/${{env.ARTIFACT_STAGING_FOLDER}}" ${{env.SOLUTION}} 
       
       - name: Upload Build Artifacts
 #        if: ${{ github.event_name != 'pull_request' }}
@@ -184,7 +184,7 @@ jobs:
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: Website/*.zip
+          package: Website
 
       ###########################################
       # Test the Web App
