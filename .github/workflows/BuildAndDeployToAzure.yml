@@ -95,6 +95,17 @@ jobs:
       ###########################################
       # Validate the ARM Template
       ###########################################
+      - name: Cache ARM Template
+        id: CacheARMTemplate
+        uses: actions/cache@v2
+        env:
+          cache-name: Cache-ARMTemplate
+        with:
+          path: "PartsUnlimited-aspnet45/packages"
+          key: ${{ env.cache-name }}-${{ hashFiles('PartsUnlimited-aspnet45/src/PartsUnlimitedWebsite/packages.config') }}-${{ hashFiles('PartsUnlimited-aspnet45/test/PartsUnlimited.SeleniumTests/packages.config') }}-${{ hashFiles('PartsUnlimited-aspnet45/test/PartsUnlimited.UnitTests/packages.config') }}
+#         template: ${{ env.ARM_FILE_PATH }}/${{ env.ARM_FILE_NAME }}.json
+#         parameters: ${{ env.ARM_FILE_PATH }}/${{ env.ARM_FILE_NAME }}.param.json CICDEngineName="${{ env.TAG_CICD_Engine_Name }}" PUL_ServerName=${{ env.SQL_Server_Name }} PUL_DBLogin=${{ secrets.SQL_DB_LOGIN }} PUL_DBPassword=${{ secrets.SQL_DB_PASSWORD }} PUL_DBPasswordForTest=${{ secrets.SQL_DB_PASSWORD }} PUL_HostingPlanName=${{ env.Hosting_Plan_Name }} WebsiteName=${{ env.Website_Name }} 
+
       - name: "Azure login"
         uses: azure/login@v1
         with:
