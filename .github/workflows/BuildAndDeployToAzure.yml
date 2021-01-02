@@ -40,6 +40,7 @@ jobs:
       SOLUTION: 'PartsUnlimited-aspnet45/PartsUnlimited.sln'
       ARTIFACT_STAGING_PATH: 'PartsUnlimited-aspnet45/src/PartsUnlimitedWebsite'
       ARTIFACT_STAGING_FOLDER: 'bin/Website'
+      UNIT_TESTS_PATH: 'PartsUnlimited-aspnet45/test/PartsUnlimited.UnitTests/PartsUnlimited.UnitTests.csproj'
       TESTS_STAGING_PATH: 'PartsUnlimited-aspnet45/test/PartsUnlimited.SeleniumTests/bin'
   
       # Configuration type to build.
@@ -50,25 +51,6 @@ jobs:
   
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-######################################################################################
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-      - name: Dump job context
-        env:
-          JOB_CONTEXT: ${{ toJson(job) }}
-        run: echo "$JOB_CONTEXT"
-      - name: Dump steps context
-        env:
-          STEPS_CONTEXT: ${{ toJson(steps) }}
-        run: echo "$STEPS_CONTEXT"
-      - name: Dump runner context
-        env:
-          RUNNER_CONTEXT: ${{ toJson(runner) }}
-        run: echo "$RUNNER_CONTEXT"
-######################################################################################
-
       ###########################################
       # Build App
       ###########################################
@@ -96,7 +78,16 @@ jobs:
         # Add additional options to the MSBuild command line here (like platform or verbosity level).
         # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
         run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:PlatformTarget=${{ env.BUILD_PLATFORM }} /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:publishUrl="${{env.GITHUB_WORKSPACE}}/${{env.ARTIFACT_STAGING_PATH}}/${{env.ARTIFACT_STAGING_FOLDER}}" ${{env.SOLUTION}} 
-      
+
+      - name: Run Unit Tests
+        uses: zyborg/dotnet-tests-report@v1.0.0
+        with:
+          project_path: "${{env.UNIT_TESTS_PATH}}"
+          report_name: '01 Unit Tests'
+          report_title: '01 Unit Tests'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          set_check_status_from_test_outcome: true
+
       - name: Upload Build Artifacts
         if: ${{ github.event_name != 'pull_request' }}
         uses: actions/upload-artifact@main
