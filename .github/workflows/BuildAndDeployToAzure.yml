@@ -27,7 +27,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a multiple jobs: "CI", "Dev", "QA", "Prod"
+# This workflow contains a multiple jobs: "CI", "Dev", "QA", "Prod"
 ###################################################################
 # CI Stage                                                        #
 ###################################################################
@@ -50,6 +50,25 @@ jobs:
   
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+######################################################################################
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: Dump job context
+        env:
+          JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo "$JOB_CONTEXT"
+      - name: Dump steps context
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps) }}
+        run: echo "$STEPS_CONTEXT"
+      - name: Dump runner context
+        env:
+          RUNNER_CONTEXT: ${{ toJson(runner) }}
+        run: echo "$RUNNER_CONTEXT"
+######################################################################################
+
       ###########################################
       # Build App
       ###########################################
@@ -122,14 +141,14 @@ jobs:
           name: ARM_Templates
           path: "${{ env.ARM_FILE_PATH }}/${{ env.ARM_FILE_NAME }}.*"
 
-
+###################################################################
+# Dev Stage                                                       #
+###################################################################
   Dev:
     if: contains(github.event_name, 'push')
     
     # The type of runner that the job will run on
     runs-on: windows-2019
-    env:
-      ENV_NAME: -dev 
 
     environment:
       name: Dev
@@ -192,13 +211,14 @@ jobs:
           name: Tests
           path: Tests
 
+###################################################################
+# QA Stage                                                        #
+###################################################################
   QA:
     if: contains(github.event_name, 'push')
     
     # The type of runner that the job will run on
     runs-on: windows-2019
-    env:
-      ENV_NAME: -qa
  
     # Steps represent a sequence of tasks that will be executed as part of the job
     environment:
@@ -233,13 +253,14 @@ jobs:
           name: Tests
           path: Tests
 
+###################################################################
+# Production Stage                                                #
+###################################################################
   Production:
     if: contains(github.event_name, 'push')
     
     # The type of runner that the job will run on
     runs-on: windows-2019
-    env:
-      ENV_NAME: ${{null}} 
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     environment:
