@@ -79,14 +79,14 @@ jobs:
         run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:PlatformTarget=${{ env.BUILD_PLATFORM }} /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:publishUrl="${{env.GITHUB_WORKSPACE}}/${{env.ARTIFACT_STAGING_PATH}}/${{env.ARTIFACT_STAGING_FOLDER}}" ${{env.SOLUTION}} 
       
       - name: Upload Build Artifacts
-#        if: ${{ github.event_name != 'pull_request' }}
+        if: ${{ github.event_name != 'pull_request' }}
         uses: actions/upload-artifact@main
         with:
           name: Website
           path: "${{env.GITHUB_WORKSPACE}}/${{env.ARTIFACT_STAGING_PATH}}/${{env.ARTIFACT_STAGING_FOLDER}}"
 
       - name: Upload Test Artifacts
-#        if: ${{ github.event_name != 'pull_request' }}
+        if: ${{ github.event_name != 'pull_request' }}
         uses: actions/upload-artifact@main
         with:
           name: Tests
@@ -116,7 +116,7 @@ jobs:
           az logout
   
       - name: Upload ARM Artifacts
-#        if: ${{ github.event_name != 'pull_request' }}
+        if: ${{ github.event_name != 'pull_request' }}
         uses: actions/upload-artifact@main
         with:
           name: ARM_Templates
@@ -124,10 +124,7 @@ jobs:
 
 
   Dev:
-    ###########################################################################
-    # REMOVE THIS COMMENT  
-    # if: contains(github.event_name, 'push')
-    ###########################################################################
+    if: contains(github.event_name, 'push')
     
     # The type of runner that the job will run on
     runs-on: windows-2019
@@ -206,22 +203,35 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     environment:
       name: QA
-      url: https://dabu-partsunlimited-qa.azurewebsites.net/ 
+      url: ${{ steps.DeployWebApp.outputs.webapp-url }}
 
     needs: Dev
     steps:
-      - name: "Azure login"
-        uses: azure/login@v1
+      ###########################################
+      # Deploy the Web App
+      ###########################################
+      - name: Download build artifacts
+        uses: actions/download-artifact@main
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          name: Website
+          path: Website
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo 'This is QA!'
+      - name: Deploy Azure WebApp
+        id: DeployWebApp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: Website
 
-      - name: Azure logout
-        run: |
-          az logout
+      ###########################################
+      # Test the Web App
+      ###########################################
+      - name: Download test artifacts
+        uses: actions/download-artifact@main
+        with:
+          name: Tests
+          path: Tests
 
   Production:
     if: contains(github.event_name, 'push')
@@ -234,19 +244,23 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     environment:
       name: Production
-      url: https://dabu-partsunlimited.azurewebsites.net/ 
+      url: ${{ steps.DeployWebApp.outputs.webapp-url }}
 
     needs: QA
     steps:
-      - name: "Azure login"
-        uses: azure/login@v1
+      ###########################################
+      # Deploy the Web App
+      ###########################################
+      - name: Download build artifacts
+        uses: actions/download-artifact@main
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          name: Website
+          path: Website
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo 'This is Production!'
-
-      - name: Azure logout
-        run: |
-          az logout
+      - name: Deploy Azure WebApp
+        id: DeployWebApp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: Website
