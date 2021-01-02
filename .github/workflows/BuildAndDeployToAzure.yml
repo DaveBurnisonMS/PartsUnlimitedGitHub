@@ -79,14 +79,6 @@ jobs:
         # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
         run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:PlatformTarget=${{ env.BUILD_PLATFORM }} /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:publishUrl="${{env.GITHUB_WORKSPACE}}/${{env.ARTIFACT_STAGING_PATH}}/${{env.ARTIFACT_STAGING_FOLDER}}" ${{env.SOLUTION}} 
 
-      - name: Run Unit Tests
-        uses: zyborg/dotnet-tests-report@v1.0.0
-        with:
-          project_path: "${{env.UNIT_TESTS_PATH}}"
-          report_name: '01 Unit Tests'
-          report_title: '01 Unit Tests'
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Upload Build Artifacts
         if: ${{ github.event_name != 'pull_request' }}
         uses: actions/upload-artifact@main
