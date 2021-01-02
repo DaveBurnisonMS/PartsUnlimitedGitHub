@@ -136,7 +136,7 @@ jobs:
 
     environment:
       name: Dev
-      url: ${{ steps.DeployWebApp.outputs.url_output }}
+      url: ${{ steps.DeployWebApp.outputs.webapp-url }}
 
     needs: CI
     steps:
