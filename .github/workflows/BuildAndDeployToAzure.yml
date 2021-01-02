@@ -101,17 +101,17 @@ jobs:
         env:
           cache-name: Cache-ARMTemplate
         with:
-          path: "PartsUnlimited-aspnet45/packages"
-          key: ${{ env.cache-name }}-${{ hashFiles('PartsUnlimited-aspnet45/src/PartsUnlimitedWebsite/packages.config') }}-${{ hashFiles('PartsUnlimited-aspnet45/test/PartsUnlimited.SeleniumTests/packages.config') }}-${{ hashFiles('PartsUnlimited-aspnet45/test/PartsUnlimited.UnitTests/packages.config') }}
-#         template: ${{ env.ARM_FILE_PATH }}/${{ env.ARM_FILE_NAME }}.json
-#         parameters: ${{ env.ARM_FILE_PATH }}/${{ env.ARM_FILE_NAME }}.param.json CICDEngineName="${{ env.TAG_CICD_Engine_Name }}" PUL_ServerName=${{ env.SQL_Server_Name }} PUL_DBLogin=${{ secrets.SQL_DB_LOGIN }} PUL_DBPassword=${{ secrets.SQL_DB_PASSWORD }} PUL_DBPasswordForTest=${{ secrets.SQL_DB_PASSWORD }} PUL_HostingPlanName=${{ env.Hosting_Plan_Name }} WebsiteName=${{ env.Website_Name }} 
+          path: "{{$env.ARM_FILE_PATH }}"
+          key: ${{ env.cache-name }}-${{ hashFiles('${{ env.ARM_FILE_PATH }}/${{ env.ARM_FILE_NAME }}.json') }}-${{ hashFiles('${{ env.ARM_FILE_PATH }}/${{ env.ARM_FILE_NAME }}.param.json') }}
 
       - name: "Azure login"
+        if: ${{steps.CacheARMTemplate.outputs.cache-hit==false}}
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: "Validate ARM Template"
+        if: ${{steps.CacheARMTemplate.outputs.cache-hit==false}}        
         id: ValidateARMTemplate
         uses: azure/arm-deploy@v1
         with:
@@ -123,11 +123,12 @@ jobs:
          deploymentName: ${{ env.Deployment_Name }}
 
       - name: Azure logout
+        if: ${{steps.CacheARMTemplate.outputs.cache-hit==false}}
         run: |
           az logout
   
       - name: Upload ARM Artifacts
-        if: ${{ github.event_name != 'pull_request' }}
+        if: ${{ github.event_name != 'pull_request' }} && ${{steps.CacheARMTemplate.outputs.cache-hit==false}}        
         uses: actions/upload-artifact@main
         with:
           name: ARM_Templates
