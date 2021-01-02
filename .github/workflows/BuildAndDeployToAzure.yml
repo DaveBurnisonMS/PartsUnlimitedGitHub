@@ -86,7 +86,6 @@ jobs:
           report_name: '01 Unit Tests'
           report_title: '01 Unit Tests'
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          set_check_status_from_test_outcome: true
 
       - name: Upload Build Artifacts
         if: ${{ github.event_name != 'pull_request' }}
