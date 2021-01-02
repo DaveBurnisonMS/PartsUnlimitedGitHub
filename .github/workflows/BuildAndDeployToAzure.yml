@@ -101,8 +101,8 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: "Validate ARM Template"
-        uses: azure/arm-deploy@v1
         id: ValidateARMTemplate
+        uses: azure/arm-deploy@v1
         with:
          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
          resourceGroupName: ${{ env.Azure_Resource_Group }}
@@ -136,7 +136,7 @@ jobs:
 
     environment:
       name: Dev
-      url: https://dabu-partsunlimited-dev.azurewebsites.net/ 
+      url: ${{ steps.DeployWebApp.outputs.url_output }}
 
     needs: CI
     steps:
@@ -155,8 +155,8 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: "Deploy ARM Template"
+        id: DeployARMTemplate
         uses: azure/arm-deploy@v1
-        id: ValidateARMTemplate
         with:
          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
          resourceGroupName: ${{ env.Azure_Resource_Group }}
@@ -179,11 +179,12 @@ jobs:
           path: Website
 
       - name: Deploy Azure WebApp
+        id: DeployWebApp
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: Website
+          package: Website/*.zip
 
       ###########################################
       # Test the Web App
