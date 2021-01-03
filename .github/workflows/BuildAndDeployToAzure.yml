@@ -107,13 +107,13 @@ jobs:
           key: ${{env.cache-name}}-${{hashFiles('PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.json')}}-${{hashFiles('PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.param.json')}}
 
       - name: "Azure login"
-        if: ${{steps.CacheARMTemplate.outputs.cache-hit==false}}
+        if: ${{steps.CacheARMTemplateCI.outputs.cache-hit==false}}
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: "Validate ARM Template"
-        if: ${{steps.CacheARMTemplate.outputs.cache-hit==false}}        
+        if: ${{steps.CacheARMTemplateCI.outputs.cache-hit==false}}        
         id: ValidateARMTemplate
         uses: azure/arm-deploy@v1
         with:
@@ -125,7 +125,7 @@ jobs:
          deploymentName: ${{ env.Deployment_Name }}
 
       - name: Azure logout
-        if: ${{steps.CacheARMTemplate.outputs.cache-hit==false}}
+        if: ${{steps.CacheARMTemplateCI.outputs.cache-hit==false}}
         run: |
           az logout
   
@@ -172,14 +172,14 @@ jobs:
           key: ${{env.cache-name}}-${{hashFiles('PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.json')}}-${{hashFiles('PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.param.json')}}
 
       - name: "Azure login"
-        if: ${{steps.CacheARMTemplate.outputs.cache-hit==false}}        
+        if: ${{steps.CacheARMTemplateDev.outputs.cache-hit==false}}        
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: "Deploy ARM Template"
         id: DeployARMTemplate
-        if: ${{steps.CacheARMTemplate.outputs.cache-hit==false}}        
+        if: ${{steps.CacheARMTemplateDev.outputs.cache-hit==false}}        
         uses: azure/arm-deploy@v1
         with:
          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
@@ -190,7 +190,7 @@ jobs:
          deploymentName: ${{ env.Deployment_Name }}
 
       - name: Azure logout
-        if: ${{steps.CacheARMTemplate.outputs.cache-hit==false}}               
+        if: ${{steps.CacheARMTemplateDev.outputs.cache-hit==false}}               
         run: |
           az logout
 
