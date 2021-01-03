@@ -55,7 +55,9 @@
   "variables": {
     "PartsUnlimitedServerName": "[toLower(parameters('PUL_ServerName'))]",
     "PartsUnlimitedServerNameDev": "[concat(variables('PartsUnlimitedServerName'), 'dev')]",
-    "PartsUnlimitedServerNameQA": "[concat(variables('PartsUnlimitedServerName'), 'qa')]"
+    "PartsUnlimitedServerNameQA": "[concat(variables('PartsUnlimitedServerName'), 'qa')]",
+    "TAG_Dept": "eCommerce",
+    "TAG_Team": "Dev"
   },
   "resources": [
     {
@@ -66,6 +68,8 @@
       "apiVersion": "2014-04-01-preview",
       "tags": {
         "displayName": "PartsUnlimitedServer",
+        "Dept": [variables('TAG_Dept')]",
+        "Team": [variables('TAG_Team')]",
         "CICDEngine": "[parameters('CICDEngineName')]"
       },
       "properties": {
