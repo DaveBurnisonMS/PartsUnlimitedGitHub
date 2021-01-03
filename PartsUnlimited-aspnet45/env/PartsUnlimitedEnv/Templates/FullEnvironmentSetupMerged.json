@@ -57,7 +57,7 @@
     "PartsUnlimitedServerNameDev": "[concat(variables('PartsUnlimitedServerName'), 'dev')]",
     "PartsUnlimitedServerNameQA": "[concat(variables('PartsUnlimitedServerName'), 'qa')]",
     "TAG_Dept": "Sales",
-    "TAG_Team": "Dev"
+    "TAG_Team": "Development"
   },
   "resources": [
     {
