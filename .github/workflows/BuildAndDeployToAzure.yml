@@ -96,13 +96,15 @@ jobs:
       # Validate the ARM Template
       ###########################################
       - name: Cache ARM Template
+        # Use a cache of the ARM Templates and the related hash values to determine if the ARM Temlates changed.
+        # If they did not change, we will not execute the following actions. 
         id: CacheARMTemplate
         uses: actions/cache@v2
         env:
           cache-name: Cache-ARMTemplate
         with:
-          path: "{{$env.ARM_FILE_PATH }}"
-          key: ${{ env.cache-name }}-${{ hashFiles('${{ env.ARM_FILE_PATH }}/${{ env.ARM_FILE_NAME }}.json') }}-${{ hashFiles('${{ env.ARM_FILE_PATH }}/${{ env.ARM_FILE_NAME }}.param.json') }}
+          path: "${{env.ARM_FILE_PATH}}"
+          key: ${{env.cache-name}}-${{hashFiles(${{env.ARM_FILE_PATH}}/${{env.ARM_FILE_NAME}}.json)}}-${{hashFiles(${{env.ARM_FILE_PATH}}/${{env.ARM_FILE_NAME}}.param.json) }}
 
       - name: "Azure login"
         if: ${{steps.CacheARMTemplate.outputs.cache-hit==false}}
