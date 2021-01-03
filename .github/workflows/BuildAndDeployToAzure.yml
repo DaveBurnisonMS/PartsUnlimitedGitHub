@@ -140,7 +140,7 @@ jobs:
 # Dev Stage                                                       #
 ###################################################################
   Dev:
-    if: contains(github.event_name, 'push')
+#    if: contains(github.event_name, 'push')
     
     # The type of runner that the job will run on
     runs-on: windows-2019
@@ -154,19 +154,33 @@ jobs:
       ###########################################
       # Deploy the ARM Template
       ###########################################
+      - name: Cache ARM Template
+        # Use a cache of the ARM Templates and the related hash values to determine if the ARM Temlates changed.
+        # If they did not change, we will not execute the following actions. 
+        id: CacheARMTemplate
+        uses: actions/cache@v2
+        env:
+          cache-name: Cache-ARMTemplate
+        with:
+          path: "${{env.ARM_FILE_PATH}}"
+          key: ${{env.cache-name}}-${{hashFiles('PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.json')}}-${{hashFiles('PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.param.json')}}
+
       - name: Download ARM Files
+        if: ${{steps.CacheARMTemplate.outputs.cache-hit==false}}        
         uses: actions/download-artifact@main
         with:
           name: ARM_Templates
           path: ${{ env.ARM_FILE_PATH }}
           
       - name: "Azure login"
+        if: ${{steps.CacheARMTemplate.outputs.cache-hit==false}}        
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: "Deploy ARM Template"
         id: DeployARMTemplate
+        if: ${{steps.CacheARMTemplate.outputs.cache-hit==false}}        
         uses: azure/arm-deploy@v1
         with:
          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
@@ -177,6 +191,7 @@ jobs:
          deploymentName: ${{ env.Deployment_Name }}
 
       - name: Azure logout
+        if: ${{steps.CacheARMTemplate.outputs.cache-hit==false}}               
         run: |
           az logout
 
