@@ -104,7 +104,7 @@ jobs:
           cache-name: Cache-ARMTemplate
         with:
           path: "${{env.ARM_FILE_PATH}}"
-          key: ${{env.cache-name}}-${{hashFiles(${{env.ARM_FILE_PATH}}/${{env.ARM_FILE_NAME}}.json)}}-${{hashFiles(${{env.ARM_FILE_PATH}}/${{env.ARM_FILE_NAME}}.param.json) }}
+          key: ${{env.cache-name}}-${{hashFiles('PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.json')}}-${{hashFiles('PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.param.json')}}
 
       - name: "Azure login"
         if: ${{steps.CacheARMTemplate.outputs.cache-hit==false}}
