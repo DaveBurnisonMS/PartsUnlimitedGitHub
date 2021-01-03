@@ -101,6 +101,8 @@
           ],
           "tags": {
             "displayName": "PartsUnlimitedDB",
+            "Dept": "[variables('TAG_Dept')]",
+            "Team": "[variables('TAG_Team')]",
             "CICDEngine": "[parameters('CICDEngineName')]"
           },
           "properties": {
@@ -120,6 +122,8 @@
       "dependsOn": [],
       "tags": {
         "displayName": "PartsUnlimitedServer",
+        "Dept": "[variables('TAG_Dept')]",
+        "Team": "[variables('TAG_Team')]",
         "CICDEngine": "[parameters('CICDEngineName')]"
       },
       "properties": {
@@ -151,6 +155,8 @@
           ],
           "tags": {
             "displayName": "PartsUnlimitedDB",
+            "Dept": "[variables('TAG_Dept')]",
+            "Team": "[variables('TAG_Team')]",
             "CICDEngine": "[parameters('CICDEngineName')]"
           },
           "properties": {
@@ -170,6 +176,8 @@
       "dependsOn": [],
       "tags": {
         "displayName": "PartsUnlimitedServer",
+        "Dept": "[variables('TAG_Dept')]",
+        "Team": "[variables('TAG_Team')]",
         "CICDEngine": "[parameters('CICDEngineName')]"
       },
       "properties": {
@@ -201,6 +209,8 @@
           ],
           "tags": {
             "displayName": "PartsUnlimitedDB",
+            "Dept": "[variables('TAG_Dept')]",
+            "Team": "[variables('TAG_Team')]",
             "CICDEngine": "[parameters('CICDEngineName')]"
           },
           "properties": {
@@ -219,6 +229,8 @@
       "apiVersion": "2014-04-01",
       "tags": {
         "displayName": "insightsComponents",
+        "Dept": "[variables('TAG_Dept')]",
+        "Team": "[variables('TAG_Team')]",
         "CICDEngine": "[parameters('CICDEngineName')]"
       },
       "properties": {
@@ -233,6 +245,8 @@
       "apiVersion": "2014-04-01",
       "tags": {
         "displayName": "insightsComponents",
+        "Dept": "[variables('TAG_Dept')]",
+        "Team": "[variables('TAG_Team')]",
         "CICDEngine": "[parameters('CICDEngineName')]"
       },
       "properties": {
@@ -247,6 +261,8 @@
       "apiVersion": "2014-04-01",
       "tags": {
         "displayName": "insightsComponents",
+        "Dept": "[variables('TAG_Dept')]",
+        "Team": "[variables('TAG_Team')]",
         "CICDEngine": "[parameters('CICDEngineName')]"
       },
       "properties": {
@@ -262,6 +278,8 @@
       "dependsOn": [],
       "tags": {
         "displayName": "PartsUnlimitedHostingPlan",
+        "Dept": "[variables('TAG_Dept')]",
+        "Team": "[variables('TAG_Team')]",
         "CICDEngine": "[parameters('CICDEngineName')]"
       },
       "properties": {
@@ -425,6 +443,8 @@
       "tags": {
         "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('PUL_HostingPlanName'))]": "Resource",
         "displayName": "PartsUnlimitedWebsite",
+        "Dept": "[variables('TAG_Dept')]",
+        "Team": "[variables('TAG_Team')]",
         "CICDEngine": "[parameters('CICDEngineName')]"
       },
       "properties": {
@@ -480,6 +500,8 @@
           ],
           "tags": {
             "displayName": "[concat(parameters('WebSiteName'), '-Dev')]",
+            "Dept": "[variables('TAG_Dept')]",
+            "Team": "[variables('TAG_Team')]",
             "CICDEngine": "[parameters('CICDEngineName')]"
           },
           "properties": {
@@ -523,6 +545,8 @@
           ],
           "tags": {
             "displayName": "[concat(parameters('WebSiteName'), '-QA')]",
+            "Dept": "[variables('TAG_Dept')]",
+            "Team": "[variables('TAG_Team')]",
             "CICDEngine": "[parameters('CICDEngineName')]"
           },
           "properties": {
