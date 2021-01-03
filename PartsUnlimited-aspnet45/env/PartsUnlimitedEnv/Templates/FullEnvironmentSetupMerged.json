@@ -68,8 +68,8 @@
       "apiVersion": "2014-04-01-preview",
       "tags": {
         "displayName": "PartsUnlimitedServer",
-        "Dept": [variables('TAG_Dept')]",
-        "Team": [variables('TAG_Team')]",
+        "Dept": "[variables('TAG_Dept')]",
+        "Team": "[variables('TAG_Team')]",
         "CICDEngine": "[parameters('CICDEngineName')]"
       },
       "properties": {
