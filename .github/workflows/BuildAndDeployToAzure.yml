@@ -140,7 +140,7 @@ jobs:
 # Dev Stage                                                       #
 ###################################################################
   Dev:
-#    if: contains(github.event_name, 'push')
+    if: contains(github.event_name, 'push')
     
     # The type of runner that the job will run on
     runs-on: windows-2019
