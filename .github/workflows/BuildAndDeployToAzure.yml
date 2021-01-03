@@ -98,10 +98,10 @@ jobs:
       - name: Cache ARM Template
         # Use a cache of the ARM Templates and the related hash values to determine if the ARM Temlates changed.
         # If they did not change, we will not execute the following actions. 
-        id: CacheARMTemplate
+        id: CacheARMTemplateCI
         uses: actions/cache@v2
         env:
-          cache-name: Cache-ARMTemplate
+          cache-name: Cache-ARMTemplateCI
         with:
           path: "${{env.ARM_FILE_PATH}}"
           key: ${{env.cache-name}}-${{hashFiles('PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.json')}}-${{hashFiles('PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.param.json')}}
@@ -130,7 +130,7 @@ jobs:
           az logout
   
       - name: Upload ARM Artifacts
-        if: ${{ github.event_name != 'pull_request' }} && ${{steps.CacheARMTemplate.outputs.cache-hit==false}}        
+        if: ${{ github.event_name != 'pull_request' }}
         uses: actions/upload-artifact@main
         with:
           name: ARM_Templates
@@ -154,24 +154,23 @@ jobs:
       ###########################################
       # Deploy the ARM Template
       ###########################################
-      - name: Cache ARM Template
-        # Use a cache of the ARM Templates and the related hash values to determine if the ARM Temlates changed.
-        # If they did not change, we will not execute the following actions. 
-        id: CacheARMTemplate
-        uses: actions/cache@v2
-        env:
-          cache-name: Cache-ARMTemplate
-        with:
-          path: "${{env.ARM_FILE_PATH}}"
-          key: ${{env.cache-name}}-${{hashFiles('PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.json')}}-${{hashFiles('PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.param.json')}}
-
       - name: Download ARM Files
-        if: ${{steps.CacheARMTemplate.outputs.cache-hit==false}}        
         uses: actions/download-artifact@main
         with:
           name: ARM_Templates
           path: ${{ env.ARM_FILE_PATH }}
           
+      - name: Cache ARM Template
+        # Use a cache of the ARM Templates and the related hash values to determine if the ARM Temlates changed.
+        # If they did not change, we will not execute the following actions. 
+        id: CacheARMTemplateDev
+        uses: actions/cache@v2
+        env:
+          cache-name: Cache-ARMTemplateDev
+        with:
+          path: "${{env.ARM_FILE_PATH}}"
+          key: ${{env.cache-name}}-${{hashFiles('PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.json')}}-${{hashFiles('PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.param.json')}}
+
       - name: "Azure login"
         if: ${{steps.CacheARMTemplate.outputs.cache-hit==false}}        
         uses: azure/login@v1
