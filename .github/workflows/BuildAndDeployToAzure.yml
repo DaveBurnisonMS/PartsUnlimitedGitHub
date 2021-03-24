@@ -1,6 +1,7 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Build_And_Deploy_To_Azure
+###################################################################
+# Environment Variables                                           #
+###################################################################
 env:
   #ARM Template Parameters
   TAG_CICD_Engine_Name: GitHub Actions
@@ -14,7 +15,9 @@ env:
   # Webapp variables
   AZURE_WEBAPP_NAME: 'dabu-PartsUnlimited'
 
-# Controls when the action will run. 
+###################################################################
+# Triggers - Controls when the action will run.                   #
+###################################################################
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
@@ -78,6 +81,9 @@ jobs:
         # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
         run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:PlatformTarget=${{ env.BUILD_PLATFORM }} /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:publishUrl="${{env.GITHUB_WORKSPACE}}/${{env.ARTIFACT_STAGING_PATH}}/${{env.ARTIFACT_STAGING_FOLDER}}" ${{env.SOLUTION}} 
 
+      ###########################################
+      # Upload Artifacts
+      ###########################################
       - name: Upload Build Artifacts
         if: ${{ github.event_name != 'pull_request' }}
         uses: actions/upload-artifact@main
@@ -92,6 +98,15 @@ jobs:
           name: Tests
           path: "${{env.TESTS_STAGING_PATH}}/${{env.BUILD_CONFIGURATION}}"
 
+      ###########################################
+      # Run Unit Tests
+      ###########################################
+      - name: Setup VSTest path
+        uses: darenm/Setup-VSTest@v1      
+        
+      - name: Run VSTest
+        run: vstest.console.exe /Platform:x64 **\*test*.dll /TestCaseFilter:TestCategory=Unit Tests
+        
       ###########################################
       # Validate the ARM Template
       ###########################################
