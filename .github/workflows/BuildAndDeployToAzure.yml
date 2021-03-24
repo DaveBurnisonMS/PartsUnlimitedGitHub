@@ -107,7 +107,7 @@ jobs:
         
       - name: Run VSTest
 #        run: vstest.console.exe "${{env.UNIT_TESTS_STAGING_PATH}}/${{env.BUILD_CONFIGURATION}}/*test*.dll" /Platform:x64 /TestCaseFilter:"TestCategory=Unit Tests"
-        run: vstest.console.exe "${{env.UI_TESTS_STAGING_PATH}}/${{env.BUILD_CONFIGURATION}}/*test*.dll" /Platform:x64 /TestCaseFilter:"TestCategory=L1UITests"
+        run: vstest.console.exe "${{env.UI_TESTS_STAGING_PATH}}/${{env.BUILD_CONFIGURATION}}/*test*.dll" /Platform:x64
 #        run: vstest.console.exe "${{env.UI_TESTS_STAGING_PATH}}/${{env.BUILD_CONFIGURATION}}/*test*.dll" /Platform:x64 /TestCaseFilter:"TestCategory=L2UITests"
         
       ###########################################
