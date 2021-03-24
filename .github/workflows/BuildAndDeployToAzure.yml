@@ -101,11 +101,17 @@ jobs:
       ###########################################
       # Run Unit Tests
       ###########################################
+      - name: Download test artifacts
+        uses: actions/download-artifact@main
+        with:
+          name: Tests
+          path: Tests
+      
       - name: Setup VSTest path
         uses: darenm/Setup-VSTest@v1      
         
       - name: Run VSTest
-        run: vstest.console.exe /Platform:x64 **\*test*.dll /TestCaseFilter:TestCategory=Unit Tests
+        run: vstest.console.exe "${{env.GITHUB_WORKSPACE}}/Tests/*test*.dll" /Platform:x64 /TestCaseFilter:"TestCategory=Unit Tests"
         
       ###########################################
       # Validate the ARM Template
