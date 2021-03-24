@@ -101,11 +101,11 @@ jobs:
       ###########################################
       # Run Unit Tests
       ###########################################
-#      - name: Setup VSTest path
-#        uses: darenm/Setup-VSTest@v1      
-#        
-#      - name: Run VSTest
-#        run: vstest.console.exe "${{env.GITHUB_WORKSPACE}}/Tests/*test*.dll" /Platform:x64 /TestCaseFilter:"TestCategory=Unit Tests"
+      - name: Setup VSTest path
+        uses: darenm/Setup-VSTest@v1      
+        
+      - name: Run VSTest
+        run: vstest.console.exe "${{env.TESTS_STAGING_PATH}}/${{env.BUILD_CONFIGURATION}}/*test*.dll" /Platform:x64 /TestCaseFilter:"TestCategory=Unit Tests"
         
       ###########################################
       # Validate the ARM Template
