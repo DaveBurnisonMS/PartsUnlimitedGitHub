@@ -109,7 +109,7 @@ jobs:
         run: vstest.console.exe "${{env.UNIT_TESTS_STAGING_PATH}}/${{env.BUILD_CONFIGURATION}}/PartsUnlimited.UnitTests.dll" /Platform:x64 /TestCaseFilter:"TestCategory=Unit Tests"
         
       - name: Run Level 1 UI Tests
-        run: vstest.console.exe "${{env.UI_TESTS_STAGING_PATH}}/${{env.BUILD_CONFIGURATION}}/PartsUnlimited.SeleniumTests.dll" /Platform:x64
+        run: vstest.console.exe "${{env.UI_TESTS_STAGING_PATH}}/${{env.BUILD_CONFIGURATION}}/*test*.dll" /Platform:x64
 #        run: vstest.console.exe "${{env.UI_TESTS_STAGING_PATH}}/${{env.BUILD_CONFIGURATION}}/PartsUnlimited.SeleniumTests.dll" /Platform:x64 /TestCaseFilter:"TestCategory=L1UITests"
 
       - name: Run Level 2 UI Tests
