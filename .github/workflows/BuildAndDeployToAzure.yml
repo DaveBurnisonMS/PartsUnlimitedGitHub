@@ -106,9 +106,9 @@ jobs:
         uses: darenm/Setup-VSTest@v1      
         
       - name: Run VSTest
-        run: vstest.console.exe "${{env.UNIT_TESTS_STAGING_PATH}}/${{env.BUILD_CONFIGURATION}}/*test*.dll" /Platform:x64 /TestCaseFilter:"TestCategory=Unit Tests"
-             vstest.console.exe "${{env.UI_TESTS_STAGING_PATH}}/${{env.BUILD_CONFIGURATION}}/*test*.dll" /Platform:x64 /TestCaseFilter:"TestCategory=L1UITests"
-             vstest.console.exe "${{env.UI_TESTS_STAGING_PATH}}/${{env.BUILD_CONFIGURATION}}/*test*.dll" /Platform:x64 /TestCaseFilter:"TestCategory=L2UITests"
+#        run: vstest.console.exe "${{env.UNIT_TESTS_STAGING_PATH}}/${{env.BUILD_CONFIGURATION}}/*test*.dll" /Platform:x64 /TestCaseFilter:"TestCategory=Unit Tests"
+        run: vstest.console.exe "${{env.UI_TESTS_STAGING_PATH}}/${{env.BUILD_CONFIGURATION}}/*test*.dll" /Platform:x64 /TestCaseFilter:"TestCategory=L1UITests"
+#        run: vstest.console.exe "${{env.UI_TESTS_STAGING_PATH}}/${{env.BUILD_CONFIGURATION}}/*test*.dll" /Platform:x64 /TestCaseFilter:"TestCategory=L2UITests"
         
       ###########################################
       # Validate the ARM Template
