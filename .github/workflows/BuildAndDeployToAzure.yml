@@ -43,7 +43,8 @@ jobs:
       SOLUTION: 'PartsUnlimited-aspnet45/PartsUnlimited.sln'
       ARTIFACT_STAGING_PATH: 'PartsUnlimited-aspnet45/src/PartsUnlimitedWebsite'
       ARTIFACT_STAGING_FOLDER: 'bin/Website'
-      TESTS_STAGING_PATH: 'PartsUnlimited-aspnet45/test/PartsUnlimited.SeleniumTests/bin'
+      UNIT_TESTS_STAGING_PATH: 'PartsUnlimited-aspnet45/test/PartsUnlimited.UnitTests/bin'
+      UI_TESTS_STAGING_PATH: 'PartsUnlimited-aspnet45/test/PartsUnlimited.SeleniumTests/bin'
   
       # Configuration type to build.
       # You can convert this to a build matrix if you need coverage of multiple configuration types.
@@ -96,7 +97,7 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: Tests
-          path: "${{env.TESTS_STAGING_PATH}}/${{env.BUILD_CONFIGURATION}}"
+          path: "${{env.UI_TESTS_STAGING_PATH}}/${{env.BUILD_CONFIGURATION}}"
 
       ###########################################
       # Run Unit Tests
@@ -105,7 +106,7 @@ jobs:
         uses: darenm/Setup-VSTest@v1      
         
       - name: Run VSTest
-        run: vstest.console.exe "${{env.TESTS_STAGING_PATH}}/${{env.BUILD_CONFIGURATION}}/*test*.dll" /Platform:x86 /TestCaseFilter:"TestCategory=Unit Tests"
+        run: vstest.console.exe "${{env.UNIT_TESTS_STAGING_PATH}}/${{env.BUILD_CONFIGURATION}}/*test*.dll" /Platform:x64 /TestCaseFilter:"TestCategory=Unit Tests"
         
       ###########################################
       # Validate the ARM Template
@@ -239,8 +240,8 @@ jobs:
         uses: darenm/Setup-VSTest@v1      
         
       - name: Run VSTest
-        run: vstest.console.exe "${{env.GITHUB_WORKSPACE}}/Tests/*test*.dll" /Platform:x86 /TestCaseFilter:"TestCategory=L1UITests"
-             vstest.console.exe "${{env.GITHUB_WORKSPACE}}/Tests/*test*.dll" /Platform:x86 /TestCaseFilter:"TestCategory=L2UITests"
+        run: vstest.console.exe "${{env.GITHUB_WORKSPACE}}/Tests/*test*.dll" /Platform:x64 /TestCaseFilter:"TestCategory=L1UITests"
+             vstest.console.exe "${{env.GITHUB_WORKSPACE}}/Tests/*test*.dll" /Platform:x64 /TestCaseFilter:"TestCategory=L2UITests"
 
 ###################################################################
 # QA Stage                                                        #
