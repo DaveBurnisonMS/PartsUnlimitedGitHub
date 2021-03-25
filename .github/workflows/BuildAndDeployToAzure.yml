@@ -239,8 +239,8 @@ jobs:
       - name: Setup VSTest path
         uses: darenm/Setup-VSTest@v1      
         
-      - name: Run Level 1 UI Tests
-        run: vstest.console.exe "${{env.GITHUB_WORKSPACE}}/Tests/*test*.dll" /Platform:x64 /TestCaseFilter:"TestCategory=L1UITests"
+#      - name: Run Level 1 UI Tests
+#        run: vstest.console.exe "${{env.GITHUB_WORKSPACE}}/Tests/*test*.dll" /Platform:x64 /TestCaseFilter:"TestCategory=L1UITests"
 
 ###################################################################
 # QA Stage                                                        #
@@ -287,8 +287,8 @@ jobs:
       - name: Setup VSTest path
         uses: darenm/Setup-VSTest@v1      
         
-      - name: Run Level 2 UI Tests
-        run: vstest.console.exe "${{env.GITHUB_WORKSPACE}}/Tests/*test*.dll" /Platform:x64 /TestCaseFilter:"TestCategory=L2UITests"
+#      - name: Run Level 2 UI Tests
+#        run: vstest.console.exe "${{env.GITHUB_WORKSPACE}}/Tests/*test*.dll" /Platform:x64 /TestCaseFilter:"TestCategory=L2UITests"
 
 ###################################################################
 # Production Stage                                                #
