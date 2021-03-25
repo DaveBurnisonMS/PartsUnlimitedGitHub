@@ -134,7 +134,7 @@ namespace PartsUnlimited.UnitTests.Controllers
             Assert.IsNotNull(viewResult);
             var model = viewResult.Model as OrderDetailsViewModel;
             Assert.IsNotNull(model);
-            Assert.AreEqual(0.ToString("CBOOM"), model.OrderCostSummary.CartSubTotal);
+            Assert.AreEqual(0.ToString("C"), model.OrderCostSummary.CartSubTotal);
             Assert.AreEqual(0.ToString("C"), model.OrderCostSummary.CartShipping);
             Assert.AreEqual(0.ToString("C"), model.OrderCostSummary.CartTax);
             Assert.AreEqual(0.ToString("C"), model.OrderCostSummary.CartTotal);
