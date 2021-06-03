@@ -52,11 +52,12 @@
       "type": "string"
     }
   },
+  // KEY RESOURCE: Variables
   "variables": {
     "PartsUnlimitedServerName": "[toLower(parameters('PUL_ServerName'))]",
     "PartsUnlimitedServerNameDev": "[concat(variables('PartsUnlimitedServerName'), 'dev')]",
     "PartsUnlimitedServerNameQA": "[concat(variables('PartsUnlimitedServerName'), 'qa')]",
-    "TAG_BusinessUnit":  "Stark Industries",
+    "TAG_BusinessUnit":  "Contoso",
     "TAG_Team": "Cloud Adoption"
   },
   "resources": [
