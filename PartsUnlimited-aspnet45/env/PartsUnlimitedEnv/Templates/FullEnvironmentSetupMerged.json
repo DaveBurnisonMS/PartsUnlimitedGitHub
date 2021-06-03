@@ -52,7 +52,6 @@
       "type": "string"
     }
   },
-  // KEY RESOURCE: Variables
   "variables": {
     "PartsUnlimitedServerName": "[toLower(parameters('PUL_ServerName'))]",
     "PartsUnlimitedServerNameDev": "[concat(variables('PartsUnlimitedServerName'), 'dev')]",
